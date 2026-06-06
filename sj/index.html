@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>燕云十六声 · 武学助手 Pro</title>
+  <link rel="icon" type="image/jpeg" href="icon.jpg">
+  <link rel="apple-touch-icon" href="icon.jpg">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+:root {
+  --gold: #c9a84c; --gold-light: #e8d48b; --gold-dark: #8a6e2b;
+  --ink: #1a1a2e; --ink-light: #2a2a4a; --ink-card: #22223a;
+  --paper: #f5f0e8; --paper-dark: #e8e0d0;
+  --red: #b8443a; --red-light: #d45a4e; --jade: #4a8c7c;
+  --jade-light: #6ab8a0; --text-light: #c8c0b0; --text-dim: #888080;
+  --ming: #4a7ac8; --ming-light: #6a9ae8; --lieshi: #d4684a;
+  --lieshi-light: #e88a6a; --pozhu: #8a6ac8; --pozhu-light: #a88ae8;
+  --qiansi: #6ab8a0; --qiansi-light: #8ad4b8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--ink); color: var(--paper); min-height: 100vh; overflow-x: hidden;
+}
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3a 40%, #2a1a2a 70%, #0d0d1a 100%);
+  padding: 60px 20px 50px; text-align: center; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 30%, rgba(201,168,76,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(74,140,124,0.06) 0%, transparent 50%);
+}
+.hero-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.particle {
+  position: absolute; width: 3px; height: 3px; background: var(--gold);
+  border-radius: 50%; opacity: 0; animation: floatParticle 6s infinite;
+}
+@keyframes floatParticle {
+  0% { opacity:0; transform: translateY(100px) translateX(0); }
+  20% { opacity:0.6; }
+  80% { opacity:0.6; }
+  100% { opacity:0; transform: translateY(-300px) translateX(40px); }
+}
+.hero-icon { width: 64px; height: 64px; display: block; margin: 0 auto 12px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 30px rgba(201,168,76,0.3); }
+.hero h1 {
+  font-family: 'Noto Serif SC', serif; font-size: 2.4em; font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: 6px;
+}
+.hero p { margin-top: 10px; color: var(--text-light); font-size: 0.95em; letter-spacing: 2px; }
+.nav-bar {
+  display: flex; justify-content: center; gap: 4px;
+  background: var(--ink-light); padding: 8px 16px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  position: sticky; top: 0; z-index: 100; overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.nav-btn {
+  padding: 10px 16px; background: transparent; color: var(--text-light);
+  border: none; border-radius: 6px; cursor: pointer; font-size: 0.85em;
+  font-family: 'Noto Sans SC', sans-serif; transition: all 0.25s; white-space: nowrap;
+}
+.nav-btn:hover { color: var(--gold-light); background: rgba(201,168,76,0.08); }
+.nav-btn.active { color: var(--gold); background: rgba(201,168,76,0.12); box-shadow: inset 0 -2px 0 var(--gold); }
+.nav-kbd { font-size: 0.7em; color: var(--text-dim); margin-left: 3px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+.section { display: none; }
+.section.active { display: block; }
+.card {
+  background: var(--ink-card); border-radius: 12px; padding: 28px;
+  margin-bottom: 20px; border: 1px solid rgba(201,168,76,0.08); transition: all 0.3s;
+}
+.card:hover { border-color: rgba(201,168,76,0.2); }
+.card-title {
+  font-family: 'Noto Serif SC', serif; font-size: 1.15em; color: var(--gold);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+@media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+.wushu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+.wushu-card {
+  background: var(--ink-card); border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.08); cursor: pointer; transition: all 0.3s;
+}
+.wushu-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+.wushu-card-header { padding: 20px 18px 12px; display: flex; align-items: center; gap: 12px; }
+.wushu-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.wushu-name { font-family: 'Noto Serif SC', serif; font-size: 1.05em; font-weight: 700; color: var(--paper); }
+.wushu-sub { font-size: 0.8em; color: var(--text-dim); margin-top: 2px; }
+.wushu-tags { padding: 0 18px 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+.wushu-tag { font-size: 0.75em; padding: 3px 10px; border-radius: 20px; background: rgba(201,168,76,0.1); color: var(--gold-light); }
+.wushu-desc { padding: 0 18px 18px; font-size: 0.85em; color: var(--text-light); line-height: 1.6; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.filter-btn {
+  padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+  background: transparent; color: var(--text-light); cursor: pointer; font-size: 0.85em;
+  transition: all 0.25s; font-family: 'Noto Sans SC', sans-serif;
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+.filter-btn.active { background: rgba(201,168,76,0.15); border-color: var(--gold); color: var(--gold); }
+.section-title {
+  font-family: 'Noto Serif SC', serif; font-size: 1.6em; color: var(--gold);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+}
+.section-sub { color: var(--text-dim); margin-bottom: 28px; font-size: 0.9em; }
+.weapon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.weapon-card {
+  background: var(--ink-card); border-radius: 12px; padding: 20px; text-align: center;
+  border: 1px solid rgba(201,168,76,0.08); transition: all 0.3s;
+}
+.weapon-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.weapon-icon { font-size: 36px; margin-bottom: 8px; }
+.weapon-name { font-weight: 700; color: var(--paper); margin-bottom: 4px; }
+.weapon-type { font-size: 0.8em; color: var(--text-dim); }
+.build-card {
+  background: var(--ink-card); border-radius: 12px; padding: 24px; margin-bottom: 16px;
+  border: 1px solid rgba(201,168,76,0.08);
+}
+.build-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.build-name { font-family: 'Noto Serif SC', serif; font-size: 1.1em; color: var(--gold); }
+.build-diff { padding: 3px 12px; border-radius: 20px; font-size: 0.8em; }
+.diff-easy { background: rgba(74,140,124,0.15); color: var(--jade-light); }
+.diff-mid { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+.diff-hard { background: rgba(184,68,58,0.15); color: var(--red-light); }
+.build-desc { color: var(--text-light); font-size: 0.9em; line-height: 1.7; }
+.build-meta { display: flex; gap: 16px; margin-top: 12px; font-size: 0.85em; color: var(--text-dim); flex-wrap: wrap; }
+.build-meta span { display: flex; align-items: center; gap: 4px; }
+.skill-tree { position: relative; }
+.skill-group { margin-bottom: 28px; }
+.skill-group-title {
+  font-family: 'Noto Serif SC', serif; font-size: 1.1em; color: var(--gold);
+  margin-bottom: 12px; padding-left: 4px; border-left: 3px solid var(--gold); padding-left: 12px;
+}
+.skill-node {
+  padding: 14px 18px; margin-bottom: 8px; background: var(--ink-card);
+  border-radius: 8px; border-left: 3px solid var(--text-dim); transition: all 0.2s;
+}
+.skill-node:hover { border-left-color: var(--gold); }
+.skill-node-title { color: var(--gold-light); font-weight: 500; margin-bottom: 3px; }
+.skill-node-desc { color: var(--text-light); font-size: 0.85em; }
+.skill-node-school { font-size: 0.75em; color: var(--text-dim); margin-top: 3px; }
+.school-tag { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 0.75em; margin-right: 4px; }
+.school-general { background: rgba(201,168,76,0.1); color: var(--gold-light); }
+.result-card {
+  background: linear-gradient(135deg, var(--ink-card), #2a1a2a);
+  border: 1px solid var(--gold); border-radius: 16px; padding: 30px;
+  text-align: center; animation: fadeInUp 0.5s ease;
+}
+@keyframes fadeInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+.result-icon { font-size: 64px; margin-bottom: 10px; }
+.result-name { font-family: 'Noto Serif SC', serif; font-size: 1.8em; color: var(--gold); margin-bottom: 6px; }
+.result-sub { color: var(--text-dim); margin-bottom: 20px; }
+.result-desc { color: var(--text-light); line-height: 1.8; max-width: 600px; margin: 0 auto 24px; }
+.result-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.result-tag { padding: 4px 14px; border-radius: 20px; font-size: 0.85em; background: rgba(201,168,76,0.1); color: var(--gold-light); }
+.btn {
+  padding: 12px 28px; border: none; border-radius: 8px; cursor: pointer;
+  font-size: 0.95em; font-family: 'Noto Sans SC', sans-serif; transition: all 0.25s;
+}
+.btn-gold { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: var(--ink); font-weight: 700; }
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(201,168,76,0.3); }
+.btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+.btn-outline:hover { background: rgba(201,168,76,0.1); }
+.btn-ghost { background: transparent; color: var(--text-light); border: 1px solid rgba(255,255,255,0.1); }
+.btn-ghost:hover { border-color: var(--text-light); }
+.btn-sm { padding: 6px 14px; font-size: 0.82em; }
+.btn-danger { background: var(--red); color: var(--paper); border: none; }
+.btn-danger:hover { background: var(--red-light); }
+.back-row { margin-bottom: 16px; }
+.back-btn { background: transparent; border: none; color: var(--text-light); cursor: pointer; font-size: 0.9em; padding: 6px 0; font-family: 'Noto Sans SC', sans-serif; transition: color 0.2s; }
+.back-btn:hover { color: var(--gold); }
+.footer { text-align: center; padding: 40px 20px; color: var(--text-dim); font-size: 0.8em; border-top: 1px solid rgba(201,168,76,0.05); }
+.quiz-step { display: none; }
+.quiz-step.active { display: block; }
+.quiz-question { font-size: 1.2em; color: var(--gold-light); margin-bottom: 20px; font-family: 'Noto Serif SC', serif; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-option { padding: 14px 20px; background: var(--ink-card); border: 1px solid rgba(201,168,76,0.1); border-radius: 10px; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 12px; color: var(--text-light); }
+.quiz-option:hover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+.quiz-option.selected { border-color: var(--gold); background: rgba(201,168,76,0.12); color: var(--gold-light); }
+.quiz-option .emoji { font-size: 1.3em; }
+.progress-bar { height: 4px; background: var(--ink-light); border-radius: 2px; margin-bottom: 30px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light)); transition: width 0.5s ease; border-radius: 2px; }
+.attr-tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; font-weight: 500; }
+
+/* ====== 心法模拟 ====== */
+.sim-selected-bar {
+  display: flex; align-items: center; gap: 12px; padding: 12px 18px;
+  background: var(--ink-card); border: 1px solid rgba(201,168,76,0.12);
+  border-radius: 10px; margin-bottom: 24px; flex-wrap: wrap;
+}
+.sim-selected-slots { display: flex; gap: 8px; flex-wrap: wrap; flex:1; }
+.sim-slot {
+  width: 42px; height: 42px; border-radius: 8px; border: 1px dashed rgba(201,168,76,0.25);
+  display: flex; align-items: center; justify-content: center; font-size: 0.7em;
+  color: var(--text-dim); background: rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s;
+}
+.sim-slot.filled { border-style: solid; border-color: var(--gold); color: var(--gold); font-size: 0.65em; background: rgba(201,168,76,0.08); }
+.sim-slot.filled:hover { background: rgba(184,68,58,0.2); border-color: var(--red); }
+.sim-count { color: var(--text-light); font-size: 0.85em; }
+.sim-xinfa-card {
+  background: var(--ink-card); border-radius: 10px; padding: 16px;
+  border: 1px solid rgba(201,168,76,0.08); cursor: pointer; transition: all 0.3s;
+}
+.sim-xinfa-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.sim-xinfa-card.selected { border-color: var(--red); box-shadow: 0 0 12px rgba(184,68,58,0.2); }
+.sim-xinfa-name { font-weight: 600; color: var(--paper); font-size: 0.95em; }
+.sim-xinfa-desc { color: var(--text-dim); font-size: 0.78em; margin-top: 4px; line-height: 1.4; }
+.sim-anal-report { border: 1px solid var(--gold); border-radius: 12px; padding: 24px; background: var(--ink-card); margin-top: 16px; }
+.sim-anal-section { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(201,168,76,0.08); }
+.sim-anal-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.sim-match-card { background: rgba(201,168,76,0.05); border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; }
+
+/* ====== 视频素材 ====== */
+.video-upload-zone {
+  border: 2px dashed rgba(201,168,76,0.3); border-radius: 16px; padding: 50px 20px;
+  text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.15);
+}
+.video-upload-zone:hover, .video-upload-zone.dragover { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+.video-upload-icon { font-size: 48px; margin-bottom: 8px; opacity: 0.5; }
+.video-upload-text { color: var(--text-dim); font-size: 0.9em; }
+.video-upload-hint { color: var(--text-dim); font-size: 0.75em; margin-top: 6px; }
+.video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 24px; }
+.video-card {
+  background: var(--ink-card); border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(201,168,76,0.08); transition: all 0.3s;
+}
+.video-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.video-thumb {\n  width: 100%; aspect-ratio: 16/9; background: #111; display: flex;\n  align-items: center; justify-content: center; font-size: 36px; color: var(--text-dim);\n  position: relative;\n}
+.video-info { padding: 12px 14px; }
+.video-filename { font-size: 0.85em; color: var(--paper); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.video-meta { display: flex; justify-content: space-between; font-size: 0.7em; color: var(--text-dim); margin-top: 4px; }
+.video-delete { color: var(--red); cursor: pointer; font-size: 0.75em; }
+.video-delete:hover { color: var(--red-light); }
+.video-storage-bar {
+  height: 6px; background: var(--ink-light); border-radius: 3px; overflow: hidden; margin-top: 16px;
+}
+.video-storage-fill {
+  height: 100%; background: linear-gradient(90deg, var(--jade), var(--gold)); border-radius: 3px; transition: width 0.4s;
+}
+.video-storage-text { color: var(--text-dim); font-size: 0.75em; margin-top: 4px; text-align: right; }
+.video-empty { text-align: center; color: var(--text-dim); padding: 40px 20px; font-size: 0.9em; }
+.video-url-input-area {
+  display: flex; gap: 10px; margin-top: 16px; align-items: center; flex-wrap: wrap;
+}
+.video-url-input {
+  flex: 1; min-width: 200px; padding: 10px 14px; background: var(--ink-card);
+  border: 1px solid rgba(201,168,76,0.15); border-radius: 8px; color: var(--paper);
+  font-size: 0.85em; font-family: 'Noto Sans SC', sans-serif; outline: none;
+  transition: border-color 0.25s;
+}
+.video-url-input:focus { border-color: var(--gold); }
+.video-url-input::placeholder { color: var(--text-dim); }
+.video-link-card .video-thumb {
+  background: linear-gradient(135deg, var(--ink-light), var(--ink-card));
+  font-size: 28px; cursor: pointer;
+}
+.video-link-card .video-thumb:hover {
+  background: linear-gradient(135deg, rgba(201,168,76,0.1), var(--ink-card));
+}
+.video-url-type {
+  font-size: 0.7em; color: var(--ming-light); background: rgba(74,122,200,0.1);
+  padding: 2px 8px; border-radius: 8px; display: inline-block;
+}
+.video-link-url { color: var(--text-dim); font-size: 0.7em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; }
+
+/* ====== 视频播放弹窗 ====== */
+.video-modal {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+}
+.video-modal.open { display: flex; }
+.video-modal-content { max-width: 90vw; max-height: 85vh; position: relative; }
+.video-modal-content video { max-width: 90vw; max-height: 85vh; border-radius: 8px; }
+.video-modal-close {
+  position: absolute; top: -36px; right: 0; color: var(--text-light);
+  cursor: pointer; font-size: 1.2em; background: none; border: none;
+}
+
+/* ====== 搜索面板 ====== */
+.search-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.7); align-items: flex-start; justify-content: center; padding-top: 80px;
+}
+.search-overlay.open { display: flex; }
+.search-panel {
+  width: 600px; max-width: 90vw; background: var(--ink-light); border-radius: 12px;
+  border: 1px solid rgba(201,168,76,0.15); overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.search-input {
+  width: 100%; padding: 16px 20px; background: transparent; border: none;
+  color: var(--paper); font-size: 1.1em; font-family: 'Noto Sans SC', sans-serif;
+  outline: none; border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.search-input::placeholder { color: var(--text-dim); }
+.search-results { max-height: 400px; overflow-y: auto; padding: 8px; }
+.search-item {
+  padding: 12px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 10px;
+}
+.search-item:hover { background: rgba(201,168,76,0.08); }
+.search-item-icon { font-size: 20px; flex-shrink: 0; }
+.search-item-text { flex: 1; }
+.search-item-title { color: var(--gold-light); font-size: 0.9em; }
+.search-item-desc { color: var(--text-dim); font-size: 0.78em; margin-top: 2px; }
+.search-item-tab { font-size: 0.7em; background: rgba(201,168,76,0.08); color: var(--text-dim); padding: 2px 8px; border-radius: 8px; }
+.search-footer { padding: 10px 20px; font-size: 0.72em; color: var(--text-dim); border-top: 1px solid rgba(201,168,76,0.05); }
+.search-footer kbd { background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 4px; }
+
+@media (max-width: 600px) {
+  .hero h1 { font-size: 1.6em; letter-spacing: 4px; }
+  .container { padding: 20px 14px; }
+  .wushu-grid { grid-template-columns: 1fr; }
+  .nav-btn { padding: 8px 12px; font-size: 0.8em; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-particles" id="particles"></div>
+  <img class="hero-icon" src="icon.jpg" alt="燕云十六声">
+  <h1>燕云十六声</h1>
+  <p>全武器 · 武学 · 心法 · 奇术 · 正式服数据</p>
+</div>
+
+<div class="nav-bar" id="navBar">
+  <button class="nav-btn active" data-section="recommend">🎯 流派推荐<span class="nav-kbd">Alt+1</span></button>
+  <button class="nav-btn" data-section="weapons">🗡️ 兵器谱<span class="nav-kbd">Alt+2</span></button>
+  <button class="nav-btn" data-section="wushu">📜 武学总览<span class="nav-kbd">Alt+3</span></button>
+  <button class="nav-btn" data-section="xinfa">📖 心法大全<span class="nav-kbd">Alt+4</span></button>
+  <button class="nav-btn" data-section="qishu">🌀 奇术<span class="nav-kbd">Alt+5</span></button>
+  <button class="nav-btn" data-section="builds">⚙️ 流派配装<span class="nav-kbd">Alt+6</span></button>
+  <button class="nav-btn" data-section="sim">📊 心法模拟<span class="nav-kbd">Alt+7</span></button>
+  <button class="nav-btn" data-section="video">🎬 视频素材<span class="nav-kbd">Alt+8</span></button>
+</div>
+
+<div class="container">
+
+<!-- ===================== 流派推荐 ===================== -->
+<div class="section active" id="section-recommend">
+  <h2 class="section-title">🎯 流派推荐</h2>
+  <p class="section-sub">回答几个问题，帮你找到最适合的流派配装</p>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div id="quizContainer">
+    <div class="quiz-step active" data-step="0">
+      <div class="quiz-question">你偏好什么战斗定位？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-value="输出"><span class="emoji">🔥</span> 输出 — 伤害拉满，C位担当</div>
+        <div class="quiz-option" data-value="坦克"><span class="emoji">🛡️</span> 坦克 — 能扛能打，团队壁垒</div>
+        <div class="quiz-option" data-value="治疗"><span class="emoji">💚</span> 治疗 — 回血续航，团队后盾</div>
+        <div class="quiz-option" data-value="控制"><span class="emoji">❄️</span> 控制/辅助 — 控场增益，掌控节奏</div>
+      </div>
+    </div>
+    <div class="quiz-step" data-step="1">
+      <div class="quiz-question">你偏好哪种属性流派？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-value="鸣金"><span class="emoji">🔵</span> 鸣金 — 物理暴击，高速输出（剑/枪）</div>
+        <div class="quiz-option" data-value="裂石"><span class="emoji">🔴</span> 裂石 — 高防肉盾，嘲讽抗伤（刀/枪/横刀）</div>
+        <div class="quiz-option" data-value="破竹"><span class="emoji">🟣</span> 破竹 — 持续异常，气竭增伤（双刀/伞/绳镖）</div>
+        <div class="quiz-option" data-value="牵丝"><span class="emoji">🟢</span> 牵丝 — 法术/治疗，远程牵引（扇/蛊镖）</div>
+      </div>
+    </div>
+    <div class="quiz-step" data-step="2">
+      <div class="quiz-question">你偏好的兵器？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-value="长剑"><span class="emoji">🗡️</span> 长剑 — 无名/积矩九剑</div>
+        <div class="quiz-option" data-value="长枪"><span class="emoji">🔱</span> 长枪 — 无名枪/八方风雷/九曲惊魂</div>
+        <div class="quiz-option" data-value="阔刀"><span class="emoji">🔪</span> 阔刀（陌刀） — 嗟夫刀法</div>
+        <div class="quiz-option" data-value="双刀"><span class="emoji">⚡</span> 双刀 — 泥犁三垢</div>
+        <div class="quiz-option" data-value="折扇"><span class="emoji">🪭</span> 折扇 — 明川药典/九重春色</div>
+        <div class="quiz-option" data-value="油纸伞"><span class="emoji">☂️</span> 油纸伞 — 青山执笔/醉梦游春</div>
+        <div class="quiz-option" data-value="绳镖"><span class="emoji">⛓️</span> 绳镖 — 千香引魂蛊/粟子行云</div>
+        <div class="quiz-option" data-value="唐横刀"><span class="emoji">🗡️</span> 唐横刀 — 孤忠破阵</div>
+      </div>
+    </div>
+    <div class="quiz-step" data-step="3">
+      <div class="quiz-question">你的操作水平？</div>
+      <div class="quiz-options">
+        <div class="quiz-option" data-value="简单"><span class="emoji">🌱</span> 新手入门 — 简单易上手</div>
+        <div class="quiz-option" data-value="中等"><span class="emoji">🌿</span> 有一定基础 — 需要一些练习</div>
+        <div class="quiz-option" data-value="高手"><span class="emoji">🔥</span> 操作达人 — 追求上限</div>
+      </div>
+    </div>
+    <div class="quiz-step" data-step="4">
+      <div id="resultContent"></div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="btn btn-ghost" onclick="resetQuiz()">🔄 重新测评</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 兵器谱 ===================== -->
+<div class="section" id="section-weapons">
+  <h2 class="section-title">🗡️ 兵器谱</h2>
+  <p class="section-sub">燕云十六声共有8大类兵器，每类配套2种专属武学</p>
+  <div class="weapon-grid" id="weaponGrid"></div>
+</div>
+
+<!-- ===================== 武学总览 ===================== -->
+<div class="section" id="section-wushu">
+  <h2 class="section-title">📜 武学总览</h2>
+  <p class="section-sub">12套武学，分属4大属性流派：鸣金 · 裂石 · 破竹 · 牵丝</p>
+  <div class="filter-bar" id="wushuFilter">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="ming"><span class="attr-tag attr-ming">鸣金</span></button>
+    <button class="filter-btn" data-filter="lieshi"><span class="attr-tag attr-lieshi">裂石</span></button>
+    <button class="filter-btn" data-filter="pozhu"><span class="attr-tag attr-pozhu">破竹</span></button>
+    <button class="filter-btn" data-filter="qiansi"><span class="attr-tag attr-qiansi">牵丝</span></button>
+  </div>
+  <div class="wushu-grid" id="wushuGrid"></div>
+</div>
+
+<!-- ===================== 心法大全 ===================== -->
+<div class="section" id="section-xinfa">
+  <h2 class="section-title">📖 心法大全</h2>
+  <p class="section-sub">共37本心法 · 通用 + 四系专属金/紫心法</p>
+  <div id="xinfaContainer"></div>
+</div>
+
+<!-- ===================== 奇术 ===================== -->
+<div class="section" id="section-qishu">
+  <h2 class="section-title">🌀 奇术</h2>
+  <p class="section-sub">通用战斗特技 · 位移 / 增伤 / 功能控制</p>
+  <div id="qishuContainer"></div>
+</div>
+
+<!-- ===================== 流派配装 ===================== -->
+<div class="section" id="section-builds">
+  <h2 class="section-title">⚙️ 流派配装</h2>
+  <p class="section-sub">当前正式服主流成型流派搭配</p>
+  <div id="buildsContainer"></div>
+</div>
+
+<!-- ===================== 心法模拟 ===================== -->
+<div class="section" id="section-sim">
+  <h2 class="section-title">📊 心法搭配模拟器</h2>
+  <p class="section-sub">从37本心法中选4本，分析搭配 & 自动匹配成型配装</p>
+  <div class="sim-selected-bar">
+    <div class="sim-selected-slots" id="simSlots">
+      <div class="sim-slot" data-index="0" onclick="removeSimXinfa(0)">空</div>
+      <div class="sim-slot" data-index="1" onclick="removeSimXinfa(1)">空</div>
+      <div class="sim-slot" data-index="2" onclick="removeSimXinfa(2)">空</div>
+      <div class="sim-slot" data-index="3" onclick="removeSimXinfa(3)">空</div>
+    </div>
+    <div class="sim-count" id="simCount">已选 0/4</div>
+    <button class="btn btn-gold btn-sm" id="simAnalyzeBtn" onclick="analyzeSim()" disabled>📊 分析搭配</button>
+  </div>
+  <div class="filter-bar" id="simFilter">
+    <button class="filter-btn active" data-sim-filter="all">全部</button>
+    <button class="filter-btn" data-sim-filter="ming"><span class="attr-tag attr-ming">鸣金</span></button>
+    <button class="filter-btn" data-sim-filter="lieshi"><span class="attr-tag attr-lieshi">裂石</span></button>
+    <button class="filter-btn" data-sim-filter="pozhu"><span class="attr-tag attr-pozhu">破竹</span></button>
+    <button class="filter-btn" data-sim-filter="qiansi"><span class="attr-tag attr-qiansi">牵丝</span></button>
+    <button class="filter-btn" data-sim-filter="general"><span class="attr-tag attr-general">通用</span></button>
+    <button class="filter-btn" data-sim-filter="purple"><span class="attr-tag attr-general">紫色</span></button>
+  </div>
+  <div class="grid-4" id="simXinfaGrid"></div>
+  <div id="simAnalysisResult"></div>
+</div>
+
+<!-- ===================== 视频素材 ===================== -->
+<div class="section" id="section-video">
+  <h2 class="section-title">🎬 视频素材</h2>
+  <p class="section-sub">上传、存储、播放你的游戏视频素材（浏览器本地存储，最大500MB）</p>
+  <div class="video-upload-zone" id="uploadZone">
+    <div class="video-upload-icon">🎬</div>
+    <div class="video-upload-text">点击或拖拽视频文件到此处上传</div>
+    <div class="video-upload-hint">支持 MP4 / WebM / OGG · 单文件最大 500MB</div>
+    <input type="file" id="videoFileInput" accept="video/*" style="display:none">
+  </div>
+  <div class="video-storage-bar"><div class="video-storage-fill" id="storageFill" style="width:0%"></div></div>
+  <div class="video-storage-text" id="storageText">已用 0 MB / 500 MB</div>
+  <div class="video-url-input-area">
+    <input class="video-url-input" id="videoUrlInput" placeholder="粘贴视频链接（B站 / YouTube / 其他），按 Enter 添加" spellcheck="false">
+    <button class="btn btn-outline btn-sm" id="videoUrlAddBtn">➕ 添加链接</button>
+  </div>
+  <div class="video-grid" id="videoGrid"></div>
+</div>
+
+</div>
+
+<div class="footer">
+  燕云十六声 · 武学助手 Pro · 数据来源：正式服 · 持续更新 | <span style="cursor:pointer;color:var(--text-dim)" onclick="openSearch()">Ctrl+K 搜索</span>
+</div>
+
+<!-- ====== 视频播放弹窗 ====== -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-content">
+    <button class="video-modal-close" onclick="closeVideoModal()">✕ 关闭</button>
+    <video id="videoPlayer" controls></video>
+  </div>
+</div>
+
+<!-- ====== 搜索面板 ====== -->
+<div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-panel">
+    <input class="search-input" id="searchInput" placeholder="搜索武学、心法、奇术、配装、武器..." autofocus>
+    <div class="search-results" id="searchResults"></div>
+    <div class="search-footer">↑↓ 导航 · Enter 跳转 · Esc 关闭</div>
+  </div>
+</div>
+
+<script>
+// ======================= DATA =======================
+const WEAPON_DATA = [
+  { name: '长剑', icon: '🗡️', type: '轻兵', desc: '通用型兵器，搭配无名剑法（虹）或积矩九剑（影），高速输出。', school: '鸣金' },
+  { name: '长枪', icon: '🔱', type: '长兵', desc: '远程突刺，搭配无名枪法（虹）或九曲惊魂枪（影），范围压制。', school: '鸣金/裂石' },
+  { name: '阔刀（陌刀）', icon: '🔪', type: '重兵', desc: '重型武器，嗟夫刀法专属，护盾减伤弹反，副本承伤T。', school: '裂石' },
+  { name: '双刀', icon: '⚡', type: '双持', desc: '高速近战，泥犁三垢专属，叠恶身/苦果debuff持续流血。', school: '破竹' },
+  { name: '折扇', icon: '🪭', type: '奇门', desc: '法术/治疗双修，明川药典（奶妈）+ 九重春色（远程法术）。', school: '牵丝' },
+  { name: '油纸伞', icon: '☂️', type: '奇门', desc: '法术控场，青山执笔（笔墨禁锢）+ 醉梦游春（接伞增伤T0）。', school: '破竹' },
+  { name: '绳镖', icon: '⛓️', type: '远程', desc: '牵丝远程，千香引魂蛊（蛊毒）+ 粟子行云（失魂联动）。', school: '牵丝/破竹' },
+  { name: '唐横刀', icon: '🗡️', type: '重兵', desc: '重型破甲爆发，孤忠破阵专属，高爆发单体输出。', school: '裂石' }
+];
+
+const WUSHU_DATA = [
+  { id: 'wuming-jian', name: '无名剑法', school: '鸣金', subSchool: '虹', weapon: '长剑', icon: '🗡️', color: '#4a7ac8', tags: ['远程剑气','AOE','蓄力','新手友好'], role: '输出', difficulty: '简单', desc: '远程剑气AOE流派，蓄力多段剑气输出。新手开荒首选，操作简单伤害可观。', build: '无名剑法 + 九曲惊魂枪', xinfa: '易水歌 + 剑气纵横 + 凝神章' },
+  { id: 'jiju-jiujian', name: '积矩九剑', school: '鸣金', subSchool: '影', weapon: '长剑', icon: '⚔️', color: '#5a8ad8', tags: ['流血','引爆','蓄力无敌','DOT'], role: '输出', difficulty: '中等', desc: '叠流血层数后引爆造成高额伤害，蓄力附带无敌闪现。DOT核心流派，九九流主输出。', build: '积矩九剑 + 九曲惊魂枪', xinfa: '易水歌 + 剑气纵横 + 逐狼心经 + 凝神章' },
+  { id: 'wuming-qiang', name: '无名枪法', school: '鸣金', subSchool: '虹', weapon: '长枪', icon: '🔱', color: '#4a8ac8', tags: ['单体定身','突刺','无双加速','减耐'], role: '输出', difficulty: '简单', desc: '单体定身突刺，无双状态加速蓄力，减少耐力消耗。机动性强的持续输出枪法。', build: '无名枪法 + 八方风雷枪', xinfa: '易水歌 + 征人归 + 威猛歌' },
+  { id: 'jiuqu-jinghun', name: '九曲惊魂枪', school: '鸣金', subSchool: '影', weapon: '长枪', icon: '🔱', color: '#6a9ad8', tags: ['惊神增伤','团队Buff','持续','九九流'], role: '输出/辅助', difficulty: '中等', desc: '叠加惊神状态增伤，提供持续团队增益buff。九九流必备副武学，团队核心辅助输出。', build: '积矩九剑 + 九曲惊魂枪', xinfa: '易水歌 + 剑气纵横 + 凝神章' },
+  { id: 'jiefu-dao', name: '嗟夫刀法', school: '裂石', subSchool: '威', weapon: '阔刀', icon: '🔪', color: '#d4684a', tags: ['护盾','减伤','弹反','T位'], role: '坦克', difficulty: '简单', desc: '护盾减伤，弹反反击。裂石威流派核心，副本承伤主T，能扛能打。', build: '嗟夫刀法 + 八方风雷枪', xinfa: '易水歌 + 山河绝韵 + 威猛歌' },
+  { id: 'bafang-fenglei', name: '八方风雷枪', school: '裂石', subSchool: '威', weapon: '长枪', icon: '🔱', color: '#e0785a', tags: ['群体嘲讽','震慑','聚怪','范围重击'], role: '坦克/控制', difficulty: '简单', desc: '群体嘲讽震慑控怪，大范围聚怪重击。裂石威副武学，拉怪控场一把手。', build: '嗟夫刀法 + 八方风雷枪', xinfa: '易水歌 + 山河绝韵 + 威猛歌' },
+  { id: 'guzhong-pozhen', name: '孤忠破阵', school: '裂石', subSchool: '钧', weapon: '唐横刀', icon: '🗡️', color: '#c8583a', tags: ['重型破甲','重击','高爆发','单体'], role: '输出', difficulty: '中等', desc: '重型破甲重击流派，高爆发单体输出。裂石钧系专属，一刀破阵。', build: '孤忠破阵 + 八方风雷枪', xinfa: '易水歌 + 孤忠不辞 + 明晦同尘' },
+  { id: 'nili-sangou', name: '泥犁三垢', school: '破竹', subSchool: '风', weapon: '双刀', icon: '⚡', color: '#8a6ac8', tags: ['恶身','苦果','debuff','气竭穿透'], role: '输出', difficulty: '中等', desc: '叠加恶身/苦果debuff，气竭状态下高额穿透伤害。持续流血近战，破竹双刀核心。', build: '泥犁三垢 + 醉梦游春', xinfa: '易水歌 + 忘川绝响 + 千营一呼' },
+  { id: 'qingshan-zhibi', name: '青山执笔', school: '破竹', subSchool: '尘', weapon: '油纸伞', icon: '☂️', color: '#7a5ab8', tags: ['笔墨禁锢','控场','法术DOT','持续'], role: '输出/控制', difficulty: '中等', desc: '笔墨禁锢控场，法术持续DOT伤害。破竹尘系副武学，控场输出兼备。', build: '醉梦游春 + 青山执笔', xinfa: '易水歌 + 千营一呼 + 断石之构' },
+  { id: 'zuimeng-youchun', name: '醉梦游春', school: '破竹', subSchool: '尘', weapon: '油纸伞', icon: '☂️', color: '#9a7ad8', tags: ['接伞增伤','T0','法术','联动'], role: '输出', difficulty: '中等', desc: '接伞操作增伤，版本T0伞核心流派。搭配绳镖粟子行云打出爆炸法术联动。', build: '醉梦游春 + 粟子行云', xinfa: '易水歌 + 千营一呼 + 忘川绝响' },
+  { id: 'suzi-xingyun', name: '粟子行云', school: '破竹', subSchool: '尘', weapon: '绳镖', icon: '⛓️', color: '#8a7ad8', tags: ['失魂减耗','法术联动','增伤'], role: '输出/辅助', difficulty: '中等', desc: '失魂状态减少技能消耗，法术联动增伤。破竹尘系绳镖副武学，T0伞镖流核心组件。', build: '醉梦游春 + 粟子行云', xinfa: '易水歌 + 千营一呼 + 忘川绝响' },
+  { id: 'mingchuan-yaodian', name: '明川药典', school: '牵丝', subSchool: '霖', weapon: '折扇', icon: '🪭', color: '#6ab8a0', tags: ['群体回血','水阵','续航','奶妈'], role: '治疗', difficulty: '简单', desc: '群体回血，水阵续航。全游戏唯一奶妈武学，团队副本必备。', build: '明川药典 + 九重春色', xinfa: '易水歌 + 君臣药 + 花上月令' },
+  { id: 'jiuchong-chunse', name: '九重春色', school: '牵丝', subSchool: '玉', weapon: '折扇', icon: '🌸', color: '#7ac8a8', tags: ['花瓣弹道','法术','多段远程','输出'], role: '输出', difficulty: '中等', desc: '花瓣弹道法术，多段远程输出。牵丝玉系扇法，远程法术炮台。', build: '九重春色 + 明川药典', xinfa: '易水歌 + 杏花不见 + 花上月令' },
+  { id: 'qianxiang-yinhun', name: '千香引魂蛊', school: '牵丝', subSchool: '蛊', weapon: '绳镖', icon: '⛓️', color: '#5aa890', tags: ['牵丝缠绕','蛊毒','持续','远程拉扯'], role: '输出/控制', difficulty: '中等', desc: '牵丝缠绕控制，持续蛊毒伤害。牵丝蛊系绳镖，远程拉扯消耗流派。', build: '千香引魂蛊 + 九重春色', xinfa: '易水歌 + 千丝蛊 + 指玄篇注' }
+];
+
+const XINFA_DATA = {
+  general: [
+    { name: '易水歌', desc: '全游戏万能心法，叠层增伤增疗。所有流派标配首位心法。', quality: '金' },
+    { name: '征人归', desc: '常驻全伤害+5%，受击短暂负面效果。近战通用心法。', quality: '金' },
+    { name: '长生无相', desc: '卸势成功随机增伤/必会心/必会意。PVP优选心法。', quality: '金' },
+    { name: '所恨年年', desc: '普攻挂毒减防，持续DOT补伤。适合持续输出流派。', quality: '金' }
+  ],
+  ming: [
+    { name: '无名心法', desc: '鸣金系专属金心法，提升物理暴击与剑气伤害。', quality: '金' },
+    { name: '剑气纵横', desc: '鸣金系专属金心法，剑气流派核心增伤。', quality: '金' },
+    { name: '千山法', desc: '鸣金系专属金心法，提升暴击率与暴击伤害。', quality: '金' },
+    { name: '威猛歌', desc: '鸣金系通用心法，提升攻击力与技能伤害。', quality: '金' }
+  ],
+  lieshi: [
+    { name: '山河绝韵', desc: '裂石系专属金心法，提升护盾值与减伤效果。', quality: '金' },
+    { name: '孤忠不辞', desc: '裂石系专属金心法，提升防御与反弹伤害。', quality: '金' },
+    { name: '明晦同尘', desc: '裂石系专属金心法，受击时概率触发增益。', quality: '金' }
+  ],
+  pozhu: [
+    { name: '忘川绝响', desc: '破竹系专属金心法，提升异常状态伤害与穿透。', quality: '金' },
+    { name: '千营一呼', desc: '破竹系专属金心法，提升气竭状态增伤。', quality: '金' },
+    { name: '断石之构', desc: '破竹系专属金心法，格挡触发增益效果。', quality: '金' },
+    { name: '逐狼心经', desc: '破竹系通用心法，提升DOT持续伤害。', quality: '金' }
+  ],
+  qiansi: [
+    { name: '君臣药', desc: '牵丝系专属金心法，提升治疗量与回复效果。', quality: '金' },
+    { name: '花上月令', desc: '牵丝系专属金心法，提升法术伤害与弹道速度。', quality: '金' },
+    { name: '千丝蛊', desc: '牵丝系专属金心法，提升蛊毒伤害与持续时间。', quality: '金' },
+    { name: '杏花不见', desc: '牵丝系通用心法，提升远程技能伤害。', quality: '金' },
+    { name: '指玄篇注', desc: '牵丝系通用心法，提升法术穿透与暴击。', quality: '金' },
+    { name: '扶摇直上', desc: '牵丝系通用心法，轻功后增伤。', quality: '金' }
+  ],
+  purple: [
+    { name: '凝神章', desc: '常用紫色副心法，提升会心几率。', quality: '紫' },
+    { name: '移经易武', desc: '切换武器时触发增益效果。', quality: '紫' },
+    { name: '穿喉决', desc: '提升对虚弱目标的伤害。', quality: '紫' },
+    { name: '抗造大法', desc: '提升生存能力与减伤。', quality: '紫' },
+    { name: '纵地摘星', desc: '提升轻功距离与移动速度。', quality: '紫' },
+    { name: '极乐泣血', desc: '低血量时增伤。', quality: '紫' },
+    { name: '擒天势', desc: '提升对 airborne 目标的伤害。', quality: '紫' },
+    { name: '三穷致知', desc: '资源匮乏时触发增益。', quality: '紫' }
+  ]
+};
+
+const ALL_XINFA = [];
+for (const [school, items] of Object.entries(XINFA_DATA)) {
+  for (const item of items) {
+    ALL_XINFA.push({ ...item, school });
+  }
+}
+
+const QISHU_DATA = [
+  { cat: '输出增伤', items: [
+    { name: '箫吟千浪', desc: '圈内全队高额增伤，团本T0奇术，尘流标配。', icon: '🎵' },
+    { name: '神龙吐火', desc: '两段高额范围火伤，精元富余替换回马。', icon: '🐉' },
+    { name: '金蟾腾跃', desc: '突进+落地爆发，补伤害位移二合一。', icon: '🐸' }
+  ]},
+  { cat: '续航循环', items: [
+    { name: '骑龙回马', desc: '高额回耐力，九剑、九九流循环刚需。', icon: '🐴' }
+  ]},
+  { cat: '位移保命', items: [
+    { name: '阴阳迷踪步', desc: '短距无敌闪，重置技能循环，九剑核心奇术。', icon: '👻' },
+    { name: '凌云踏', desc: '高空长距突进，跑图、BOSS破招必备。', icon: '🦅' },
+    { name: '金玉手', desc: '格挡闪避，蹭心法断石触发条件。', icon: '✋' }
+  ]},
+  { cat: '功能控制', items: [
+    { name: '狮吼正声', desc: '群体破韧气竭，副本破BOSS韧性必备。', icon: '🦁' },
+    { name: '药叉破魔', desc: '破甲削防，收尾斩杀增伤。', icon: '🔮' },
+    { name: '右肩袭', desc: '近身破韧僵直，PVP先手控制。', icon: '👊' }
+  ]}
+];
+
+const BUILD_DATA = [
+  {
+    name: '鸣金影 · 九九流', tag: '鸣金', weapons: '长剑 + 长枪', difficulty: '中等',
+    desc: '当前版本T0单体输出。积矩九剑叠流血+九曲惊魂枪团队增伤，阴阳迷踪步重置循环。',
+    wushu: '积矩九剑（主） + 九曲惊魂枪（副）',
+    xinfa: '易水歌 + 剑气纵横 + 逐狼心经 + 凝神章',
+    qishu: '阴阳迷踪步 + 骑龙回马 + 神龙吐火',
+    rotation: [
+      '【前置】枪轻蓄力戳挂5层惊神→剑闪断挂5层流血(不引爆)→切枪放愁无酒(流血加连击+强效江流)',
+      '【爆发】神龙吐火二段→特殊技+接续纵横剑+卸势，连打4轮(纵横剑点完即触发，卸势消后摇)',
+      '【空窗】普攻补流血，枪小技能续惊神，CD重置再走爆发'
+    ]
+  },
+  {
+    name: '鸣金虹 · 无名剑枪', tag: '鸣金', weapons: '长剑 + 长枪', difficulty: '简单',
+    desc: '远程安逸T1，新手首选。远程攒剑气，控低耐力吃增伤，全程不贴脸。',
+    wushu: '无名剑法（主） + 无名枪法（副）',
+    xinfa: '无名心法 + 易水歌 + 威猛歌 + 千山法',
+    qishu: '骑龙回马 + 凌云踏 + 神龙吐火',
+    rotation: [
+      '【安逸循环】凌云踏近身→剑3道剑气→枪武学→3剑气→骑龙回马循环，耐力保持60%以下吃枪被动增伤',
+      '【竞速爆发】蓄力打空耐力→太白醉月+神龙吐火→剑武学两段爆发，全程远程丢剑气'
+    ]
+  },
+  {
+    name: '破竹鸢 · 伞绳镖', tag: '破竹', weapons: '油纸伞 + 绳镖', difficulty: '中等',
+    desc: '远程核爆T0。繁花值+天志豆+失魂三资源循环，保持10米外输出。',
+    wushu: '九重春色伞（主） + 凡尘绳镖（副）',
+    xinfa: '易水歌 + 千营一呼 + 忘川绝响',
+    qishu: '箫吟千浪 + 骑龙回马 + 神龙吐火',
+    rotation: [
+      '【起手】箫吟千浪+20%伤→卸势→绳镖特殊+武学挂满7层失魂',
+      '【攒繁花】伞轻击浮空蓄力(春飞尽)打满100繁花→特殊技【不谢花】无人机自动输出',
+      '【爆发】切拳甲攒4颗天志豆→满豆重拳核爆，豆子不够用小技能填空窗，重拳CD好再爆发'
+    ]
+  },
+  {
+    name: '裂石威 · 刀枪坦', tag: '裂石', weapons: '阔刀（陌刀） + 长枪', difficulty: '简单',
+    desc: '团本T兼输出。霸体防反+蓄力重击，嘲讽稳仇恨，反伤打输出。',
+    wushu: '嗟夫刀法（主） + 八方风雷枪（副）',
+    xinfa: '山河绝韵 + 抗造大法 + 威猛歌 + 易水歌',
+    qishu: '狮吼正声 + 金玉手 + 凌云踏',
+    rotation: [
+      '【起手】枪武学嘲讽聚怪→切陌刀开护盾→普攻诱敌触发防反(嗟夫反击)',
+      '【输出】防反成功后蓄力重劈，枪小技能续嘲讽，BOSS破防时奇术爆发',
+      '【纯T配装】磐石决+丹心篆（替换输出心法）'
+    ]
+  },
+  {
+    name: '裂石钧 · 斩刀流', tag: '裂石', weapons: '唐横刀 + 长枪', difficulty: '中等',
+    desc: '召安西军AOE流派。横刀蓄力破甲+召唤小兵常驻输出。',
+    wushu: '孤忠破阵（主） + 八方风雷枪（副）',
+    xinfa: '易水歌 + 孤忠不辞 + 明晦同尘',
+    qishu: '神龙吐火 + 骑龙回马 + 太白醉月',
+    rotation: [
+      '【起手】枪武学召唤安西军(小兵常驻)→横刀蓄力重击叠破甲',
+      '【循环】轻击连段刷新召唤CD，小怪群持续召兵，BOSS战保持破甲常驻',
+      '【爆发】大招留BOSS虚弱期一波带走'
+    ]
+  },
+  {
+    name: '破竹风 · 双刀速刷', tag: '破竹', weapons: '双刀 + 绳镖', difficulty: '中等',
+    desc: 'AOE速清小怪流派。绳镖聚怪+双刀烈焰清场。',
+    wushu: '泥犁三垢（主） + 凡尘绳镖（副）',
+    xinfa: '易水歌 + 忘川绝响 + 千营一呼',
+    qishu: '神龙吐火 + 骑龙回马 + 太白醉月',
+    rotation: [
+      '【聚怪】绳镖蓄力+缚刃丝拉怪聚团',
+      '【清场】切双刀5连普攻攒烈焰→狂暴开乱刃舞+血月轮清场',
+      '【单体】重复挂缚刃+双刀重击'
+    ]
+  }
+];
+
+// ======================= HELPERS =======================
+function schoolTagHtml(school) {
+  const map = { '鸣金': 'attr-ming', '裂石': 'attr-lieshi', '破竹': 'attr-pozhu', '牵丝': 'attr-qiansi' };
+  const cls = map[school];
+  const colors = { 'attr-ming': '#4a7ac8', 'attr-lieshi': '#d4684a', 'attr-pozhu': '#8a6ac8', 'attr-qiansi': '#6ab8a0' };
+  return `<span class="attr-tag" style="background:${colors[cls]||'rgba(201,168,76,0.1)'}22;color:${colors[cls]||'var(--gold-light)'}">${school}</span>`;
+}
+
+// ======================= RENDER WEAPONS =======================
+function renderWeapons() {
+  document.getElementById('weaponGrid').innerHTML = WEAPON_DATA.map(w =>
+    `<div class="weapon-card">
+      <div class="weapon-icon">${w.icon}</div>
+      <div class="weapon-name">${w.name}</div>
+      <div class="weapon-type">${schoolTagHtml(w.school)} · ${w.type}</div>
+      <div style="color:var(--text-light);font-size:0.85em;margin-top:8px;line-height:1.5">${w.desc}</div>
+    </div>`
+  ).join('');
+}
+
+// ======================= RENDER WUSHU =======================
+function renderWushu(filter) {
+  const grid = document.getElementById('wushuGrid');
+  const schoolMap = { ming: '鸣金', lieshi: '裂石', pozhu: '破竹', qiansi: '牵丝' };
+  let data = filter === 'all' ? WUSHU_DATA : WUSHU_DATA.filter(w => w.school === schoolMap[filter]);
+  grid.innerHTML = data.map(w =>
+    `<div class="wushu-card" onclick="showWushuDetail('${w.id}')">
+      <div class="wushu-card-header">
+        <div class="wushu-icon" style="background:${w.color}22;color:${w.color}">${w.icon}</div>
+        <div>
+          <div class="wushu-name">${w.name}</div>
+          <div class="wushu-sub">${schoolTagHtml(w.school)} · ${w.subSchool} · ${w.weapon}</div>
+        </div>
+      </div>
+      <div class="wushu-tags">${w.tags.map(t => `<span class="wushu-tag">${t}</span>`).join('')}<span class="wushu-tag">难度: ${w.difficulty}</span></div>
+      <div class="wushu-desc">${w.desc}</div>
+    </div>`
+  ).join('');
+}
+
+document.querySelectorAll('#wushuFilter .filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#wushuFilter .filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    renderWushu(this.dataset.filter);
+  });
+});
+
+function showWushuDetail(id) {
+  const w = WUSHU_DATA.find(d => d.id === id);
+  if (!w) return;
+  document.getElementById('wushuGrid').innerHTML =
+    `<div style="grid-column:1/-1">
+      <div class="back-row"><button class="back-btn" onclick="renderWushu(document.querySelector('#wushuFilter .active')?.dataset?.filter||'all')">← 返回列表</button></div>
+      <div class="result-card" style="text-align:left">
+        <div style="text-align:center">
+          <div style="font-size:64px;margin-bottom:8px">${w.icon}</div>
+          <div class="result-name">${w.name}</div>
+          <div class="result-sub">${schoolTagHtml(w.school)} · ${w.subSchool}系 · ${w.weapon}</div>
+        </div>
+        <div style="margin:20px 0"><div class="result-tags" style="justify-content:center">${w.tags.map(t => `<span class="result-tag">${t}</span>`).join('')}<span class="result-tag">难度: ${w.difficulty}</span><span class="result-tag">定位: ${w.role}</span></div></div>
+        <div style="color:var(--text-light);line-height:1.8;margin-bottom:16px">${w.desc}</div>
+        <div class="card"><div class="card-title">⚙️ 推荐搭配</div><div style="color:var(--gold-light);font-weight:500;margin-bottom:6px">武学：${w.build}</div><div style="color:var(--text-light);font-size:0.9em">心法：${w.xinfa}</div></div>
+      </div>
+    </div>`;
+}
+
+// ======================= RENDER XINFA =======================
+function renderXinfa() {
+  const container = document.getElementById('xinfaContainer');
+  const groups = [
+    { title: '🌟 通用必带心法（全流派通用）', key: 'general' },
+    { title: '🔵 鸣金系专属', key: 'ming' },
+    { title: '🔴 裂石系专属', key: 'lieshi' },
+    { title: '🟣 破竹系专属', key: 'pozhu' },
+    { title: '🟢 牵丝系专属', key: 'qiansi' },
+    { title: '🟡 常用紫色副心法', key: 'purple' }
+  ];
+  const qualityStyles = { '金': 'background:rgba(201,168,76,0.12);color:var(--gold-light)', '紫': 'background:rgba(138,106,200,0.12);color:var(--pozhu-light)' };
+  container.innerHTML = groups.map(g => {
+    const items = XINFA_DATA[g.key];
+    if (!items || !items.length) return '';
+    return `<div class="skill-group">
+      <div class="skill-group-title">${g.title}（${items.length}本）</div>
+      ${items.map(s => `<div class="skill-node"><div class="skill-node-title">${s.name} <span style="display:inline-block;padding:1px 8px;border-radius:10px;font-size:0.75em;${qualityStyles[s.quality]}">${s.quality} · ${g.key}</span></div><div class="skill-node-desc">${s.desc}</div></div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ======================= RENDER QISHU =======================
+function renderQishu() {
+  document.getElementById('qishuContainer').innerHTML = QISHU_DATA.map(g =>
+    `<div class="skill-group">
+      <div class="skill-group-title">${g.cat}（${g.items.length}个）</div>
+      <div class="grid-2">${g.items.map(q => `<div class="skill-node" style="border-left-color:var(--gold)"><div class="skill-node-title">${q.icon} ${q.name}</div><div class="skill-node-desc">${q.desc}</div></div>`).join('')}</div>
+    </div>`
+  ).join('');
+}
+
+// ======================= RENDER BUILDS =======================
+function renderBuilds() {
+  const diffMap = { '简单': 'easy', '中等': 'mid', '高手': 'hard' };
+  document.getElementById('buildsContainer').innerHTML = BUILD_DATA.map(b =>
+    `<div class="build-card">
+      <div class="build-header">
+        <div><div class="build-name">${schoolTagHtml(b.tag)} ${b.name}</div><div style="font-size:0.8em;color:var(--text-dim);margin-top:4px">${b.weapons}</div></div>
+        <span class="build-diff diff-${diffMap[b.difficulty]}">${b.difficulty}</span>
+      </div>
+      <div class="build-desc">${b.desc}</div>
+      <div class="build-meta"><span>📜 ${b.wushu}</span><span>📖 ${b.xinfa}</span><span>🌀 ${b.qishu}</span></div>
+      ${b.rotation ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(201,168,76,0.1)"><div style="color:var(--gold);font-size:0.9em;font-weight:500;margin-bottom:8px">🎮 输出手法</div>${b.rotation.map((r, i) => `<div style="display:flex;gap:8px;margin-bottom:6px;font-size:0.85em;color:var(--text-light);line-height:1.5"><span style="color:var(--gold-dark);flex-shrink:0;width:18px;text-align:right">${i+1}.</span><span>${r}</span></div>`).join('')}</div>` : ''}
+    </div>`
+  ).join('');
+}
+
+// ======================= QUIZ =======================
+const quizSteps = document.querySelectorAll('.quiz-step');
+const progressFill = document.getElementById('progressFill');
+let currentStep = 0;
+let answers = {};
+
+document.querySelectorAll('.quiz-option').forEach(opt => {
+  opt.addEventListener('click', function() {
+    const stepEl = this.closest('.quiz-step');
+    const step = parseInt(stepEl.dataset.step);
+    stepEl.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    this.classList.add('selected');
+    answers[step] = this.dataset.value;
+    setTimeout(() => step < 3 ? goToStep(step + 1) : showResult(), 300);
+  });
+});
+
+function goToStep(n) {
+  quizSteps.forEach(s => s.classList.remove('active'));
+  document.querySelector(`.quiz-step[data-step="${n}"]`).classList.add('active');
+  currentStep = n;
+  progressFill.style.width = ((n / 4) * 100) + '%';
+}
+
+function resetQuiz() { answers = {}; document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected')); goToStep(0); }
+
+function showResult() {
+  goToStep(4);
+  const role = answers[0], school = answers[1], weapon = answers[2], difficulty = answers[3];
+  const weaponKey = { '长剑':'剑','长枪':'枪','阔刀':'阔刀','双刀':'双刀','折扇':'扇','油纸伞':'伞','绳镖':'镖','唐横刀':'横刀' };
+  const scored = BUILD_DATA.map(b => {
+    let score = 0;
+    if (role === '输出' && !b.name.includes('坦') && !b.name.includes('药典')) score += 2;
+    if (role === '坦克' && b.name.includes('坦')) score += 3;
+    if (role === '治疗' && b.name.includes('药典')) score += 3;
+    if (role === '控制' && (b.name.includes('伞') || b.name.includes('双刀'))) score += 2;
+    if (school && b.tag === school) score += 2;
+    if (weapon && weaponKey[weapon] && b.weapons.includes(weaponKey[weapon])) score += 2;
+    if (difficulty && b.difficulty === difficulty) score += 1;
+    return { build: b, score };
+  });
+  scored.sort((a, b) => b.score - a.score);
+  const top = scored.filter(s => s.score === scored[0].score);
+  const pick = top[Math.floor(Math.random() * top.length)].build;
+  const iconMap = {'伞':'☂️','镖':'⛓️','刀':'🔪','枪':'🔱','扇':'🪭','横刀':'🗡️','剑':'🗡️'};
+  let icon = '🗡️';
+  for (const [k, v] of Object.entries(iconMap)) { if (pick.weapons.includes(k)) { icon = v; break; } }
+  document.getElementById('resultContent').innerHTML =
+    `<div class="result-card">
+      <div style="font-size:64px;margin-bottom:10px">${icon}</div>
+      <div class="result-name">${schoolTagHtml(pick.tag)} ${pick.name}</div>
+      <div class="result-sub">${pick.weapons} · ${pick.difficulty}</div>
+      <div class="result-desc" style="text-align:left">
+        <div style="margin-bottom:10px">${pick.desc}</div>
+        <div style="font-size:0.9em;color:var(--gold-light);margin-bottom:4px">📜 武学：${pick.wushu}</div>
+        <div style="font-size:0.9em;color:var(--gold-light);margin-bottom:4px">📖 心法：${pick.xinfa}</div>
+        <div style="font-size:0.9em;color:var(--gold-light)">🌀 奇术：${pick.qishu}</div>
+        ${pick.rotation ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(201,168,76,0.15)"><div style="color:var(--gold);font-size:0.9em;font-weight:500;margin-bottom:8px">🎮 输出手法</div>${pick.rotation.map((r, i) => `<div style="display:flex;gap:8px;margin-bottom:5px;font-size:0.85em;color:var(--text-light);line-height:1.5"><span style="color:var(--gold-dark);flex-shrink:0;width:18px;text-align:right">${i+1}.</span><span>${r}</span></div>`).join('')}</div>` : ''}
+      </div>
+      <div class="result-actions" style="margin-top:20px"><button class="btn btn-gold" onclick="switchToTab('builds')">查看全部配装 →</button></div>
+    </div>`;
+}
+
+// ======================= NAVIGATION =======================
+function switchToTab(name) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.nav-btn[data-section="${name}"]`).classList.add('active');
+  document.getElementById(`section-${name}`).classList.add('active');
+  window.scrollTo({ top: 300, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchToTab(btn.dataset.section));
+});
+
+// ======================= KEYBOARD SHORTCUTS =======================
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'k') { e.preventDefault(); openSearch(); return; }
+  if (e.key === 'Escape') { closeSearch(); closeVideoModal(); return; }
+  if (e.altKey) {
+    const sections = ['recommend','weapons','wushu','xinfa','qishu','builds','sim','video'];
+    const idx = parseInt(e.key) - 1;
+    if (idx >= 0 && idx < sections.length) { e.preventDefault(); switchToTab(sections[idx]); }
+  }
+});
+
+// ======================= PARTICLES =======================
+(function initParticles() {
+  const c = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+    c.appendChild(p);
+  }
+})();
+
+// ======================= 心法模拟器 =======================
+const simSelected = [];
+
+function schoolSimFilter(school) {
+  const map = { ming: '鸣金', lieshi: '裂石', pozhu: '破竹', qiansi: '牵丝' };
+  return map[school] || school;
+}
+
+function renderSimXinfa(filter) {
+  const grid = document.getElementById('simXinfaGrid');
+  let data;
+  if (filter === 'all') data = ALL_XINFA;
+  else data = ALL_XINFA.filter(x => x.school === filter);
+  
+  const qualityStyles = { '金': 'color:var(--gold-light)', '紫': 'color:var(--pozhu-light)' };
+  const schoolColors = { 'ming': '#4a7ac8', 'lieshi': '#d4684a', 'pozhu': '#8a6ac8', 'qiansi': '#6ab8a0', 'general': 'var(--gold-light)', 'purple': 'var(--pozhu-light)' };
+  
+  grid.innerHTML = data.map(x => {
+    const isSelected = simSelected.includes(x.name);
+    return `<div class="sim-xinfa-card${isSelected ? ' selected' : ''}" onclick="toggleSimXinfa('${x.name}')">
+      <div class="sim-xinfa-name">
+        ${x.name}
+        <span style="display:inline-block;padding:1px 8px;border-radius:10px;font-size:0.7em;background:rgba(201,168,76,0.08);${qualityStyles[x.quality]}">${x.quality}</span>
+      </div>
+      <div style="font-size:0.72em;color:${schoolColors[x.school] || 'var(--text-dim)'};margin-top:3px">${x.school === 'general' ? '通用' : x.school === 'purple' ? '紫色' : x.school + '系'}</div>
+      <div class="sim-xinfa-desc">${x.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleSimXinfa(name) {
+  const idx = simSelected.indexOf(name);
+  if (idx >= 0) {
+    simSelected.splice(idx, 1);
+  } else {
+    if (simSelected.length >= 4) { alert('最多选4本心法'); return; }
+    simSelected.push(name);
+  }
+  updateSimSlots();
+  renderSimXinfa(document.querySelector('#simFilter .active')?.dataset?.simFilter || 'all');
+}
+
+function removeSimXinfa(index) {
+  if (index < simSelected.length) {
+    simSelected.splice(index, 1);
+    updateSimSlots();
+    renderSimXinfa(document.querySelector('#simFilter .active')?.dataset?.simFilter || 'all');
+  }
+}
+
+function updateSimSlots() {
+  const slots = document.querySelectorAll('#simSlots .sim-slot');
+  slots.forEach((slot, i) => {
+    if (i < simSelected.length) {
+      slot.textContent = simSelected[i].substring(0, 2);
+      slot.className = 'sim-slot filled';
+    } else {
+      slot.textContent = '空';
+      slot.className = 'sim-slot';
+    }
+  });
+  document.getElementById('simCount').textContent = `已选 ${simSelected.length}/4`;
+  document.getElementById('simAnalyzeBtn').disabled = simSelected.length !== 4;
+}
+
+document.querySelectorAll('#simFilter .filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#simFilter .filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    renderSimXinfa(this.dataset.simFilter);
+  });
+});
+
+function analyzeSim() {
+  if (simSelected.length !== 4) return;
+  const selectedXinfa = simSelected.map(name => ALL_XINFA.find(x => x.name === name)).filter(Boolean);
+  
+  // Analyze: school distribution, quality count, build match
+  const schoolCounts = {};
+  let goldCount = 0, purpleCount = 0;
+  selectedXinfa.forEach(x => {
+    if (x.quality === '金') goldCount++; else purpleCount++;
+    const s = x.school;
+    if (!schoolCounts[s]) schoolCounts[s] = 0;
+    schoolCounts[s]++;
+  });
+  
+  // Determine primary school tendency
+  const schoolNames = { ming: '鸣金', lieshi: '裂石', pozhu: '破竹', qiansi: '牵丝' };
+  let primarySchool = null;
+  let maxCount = 0;
+  for (const [s, cnt] of Object.entries(schoolCounts)) {
+    if (s === 'general' || s === 'purple') continue;
+    if (cnt > maxCount) { maxCount = cnt; primarySchool = s; }
+  }
+  
+  const schoolConfidence = maxCount >= 2 ? '高' : maxCount === 1 ? '中' : '低';
+  const hasGeneral = schoolCounts['general'] > 0;
+  const hasPurple = schoolCounts['purple'] > 0;
+  
+  // Match builds
+  const buildMatches = BUILD_DATA.map(b => {
+    const bXinfa = b.xinfa.split(' + ').map(s => s.trim());
+    const matchCount = bXinfa.filter(n => simSelected.includes(n)).length;
+    return { build: b, match: matchCount, total: bXinfa.length };
+  }).filter(m => m.match >= 2).sort((a, b) => b.match - a.match);
+  
+  let rating = '高配';
+  if (goldCount < 3 && purpleCount >= 2) rating = '可升级';
+  else if (goldCount === 3 && purpleCount === 1) rating = '标准';
+  else if (goldCount === 4) rating = '高配';
+  else rating = '标准';
+  
+  // Build analysis HTML
+  let reportHTML = `<div class="sim-anal-report">
+    <div class="sim-anal-section">
+      <div style="font-size:1.1em;color:var(--gold);margin-bottom:8px">📊 搭配分析报告</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+        ${selectedXinfa.map(x => `<span class="result-tag">${x.name}</span>`).join('')}
+      </div>
+    </div>
+    <div class="sim-anal-section">
+      <div style="color:var(--gold-light);margin-bottom:6px">📈 阵容分析</div>
+      <div style="color:var(--text-light);font-size:0.9em">金心法 ${goldCount} 本 · 紫心法 ${purpleCount} 本 · 阵容评级: <strong style="color:${rating === '高配' ? 'var(--jade-light)' : rating === '标准' ? 'var(--gold-light)' : 'var(--ming-light)'}">${rating}</strong></div>
+    </div>`;
+  
+  if (primarySchool) {
+    reportHTML += `<div class="sim-anal-section">
+      <div style="color:var(--gold-light);margin-bottom:6px">🎯 流派倾向</div>
+      <div style="color:var(--text-light);font-size:0.9em">主力: ${schoolNames[primarySchool] || primarySchool}系（${maxCount}/4 · 置信度: <strong>${schoolConfidence}</strong>）</div>`;
+    if (!hasGeneral) {
+      reportHTML += `<div style="color:var(--ming-light);font-size:0.85em;margin-top:4px">⚠️ 缺少通用金心法「易水歌」，建议补入增强泛用性</div>`;
+    }
+    reportHTML += `</div>`;
+  }
+  
+  if (buildMatches.length > 0) {
+    reportHTML += `<div class="sim-anal-section">
+      <div style="color:var(--gold-light);margin-bottom:8px">🔗 推荐配装</div>`;
+    buildMatches.forEach(m => {
+      const pct = Math.round(m.match / m.total * 100);
+      reportHTML += `<div class="sim-match-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="color:var(--gold);font-weight:500">${schoolTagHtml(m.build.tag)} ${m.build.name}</div>
+          <span style="color:var(--text-dim);font-size:0.85em">匹配 ${m.match}/${m.total}</span>
+        </div>
+        <div style="color:var(--text-light);font-size:0.82em;margin-top:4px">${m.build.weapons} · ${m.build.difficulty}</div>
+        <div style="font-size:0.82em;color:var(--text-dim);margin-top:2px">📖 ${m.build.xinfa}</div>
+      </div>`;
+    });
+    reportHTML += `</div>`;
+  }
+  
+  reportHTML += `<div style="margin-top:12px"><button class="btn btn-ghost btn-sm" onclick="document.getElementById('simAnalysisResult').innerHTML=''">✕ 关闭分析</button>
+  <button class="btn btn-outline btn-sm" style="margin-left:8px" onclick="copyAnalyzeReport()">📋 复制报告</button></div>
+  </div>`;
+  
+  document.getElementById('simAnalysisResult').innerHTML = reportHTML;
+}
+
+function copyAnalyzeReport() {
+  const text = document.querySelector('.sim-anal-report')?.innerText;
+  if (text) { navigator.clipboard.writeText(text).then(() => alert('分析报告已复制到剪贴板')).catch(() => {}); }
+}
+
+// ======================= 视频素材 (IndexedDB) =======================
+const DB_NAME = 'wushuVideoDB';
+const STORE_NAME = 'videos';
+const MAX_VIDEO_SIZE = 500 * 1024 * 1024;
+let videoDB = null;
+
+function openVideoDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+      }
+    };
+    req.onsuccess = e => { videoDB = e.target.result; resolve(videoDB); };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+async function getVideos() {
+  if (!videoDB) await openVideoDB();
+  return new Promise((resolve, reject) => {
+    const tx = videoDB.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+async function addVideo(file) {
+  if (!videoDB) await openVideoDB();
+  if (file.size > MAX_VIDEO_SIZE) { alert('文件超过500MB限制'); return false; }
+  if (!file.type.startsWith('video/')) { alert('仅支持视频文件'); return false; }
+  const arrayBuffer = await file.arrayBuffer();
+  return new Promise((resolve, reject) => {
+    const tx = videoDB.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    store.add({ data: arrayBuffer, type: file.type, name: file.name, size: file.size, date: new Date().toISOString() });
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = e => { alert('上传失败'); reject(e.target.error); };
+  });
+}
+
+async function deleteVideo(id) {
+  if (!confirm('确定删除此视频？')) return;
+  if (!videoDB) await openVideoDB();
+  return new Promise((resolve, reject) => {
+    const tx = videoDB.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    store.delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = e => reject(e.target.error);
+  });
+}
+
+let videoObjectURLs = [];
+
+async function renderVideos() {
+  // Clean up old URLs
+  videoObjectURLs.forEach(u => URL.revokeObjectURL(u));
+  videoObjectURLs = [];
+  
+  const videos = await getVideos();
+  const grid = document.getElementById('videoGrid');
+  
+  if (videos.length === 0) {
+    grid.innerHTML = '<div class="video-empty">🎬 暂无视频素材，点击上方区域上传</div>';
+  } else {
+    grid.innerHTML = videos.map(v => {
+      const blob = new Blob([v.data], { type: v.type });
+      const url = URL.createObjectURL(blob);
+      videoObjectURLs.push(url);
+      const sizeMB = (v.size / 1024 / 1024).toFixed(1);
+      const date = v.date ? v.date.substring(0, 10) : '';
+      return `<div class="video-card">
+        <div class="video-thumb" onclick="playVideo(${v.id})">🎬</div>
+        <div class="video-info">
+          <div class="video-filename" title="${v.name}">${v.name}</div>
+          <div class="video-meta">
+            <span>${sizeMB} MB</span>
+            <span>${date}</span>
+            <span class="video-delete" onclick="deleteAndRefresh(${v.id})">🗑️ 删除</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  
+  // Update storage bar
+  let totalBytes = videos.reduce((s, v) => s + v.size, 0);
+  let usedMB = (totalBytes / 1024 / 1024).toFixed(1);
+  let pct = Math.min(100, (totalBytes / MAX_VIDEO_SIZE) * 100);
+  document.getElementById('storageFill').style.width = pct + '%';
+  document.getElementById('storageText').textContent = `已用 ${usedMB} MB / 500 MB`;
+}
+
+async function deleteAndRefresh(id) {
+  await deleteVideo(id);
+  await renderVideos();
+}
+
+function playVideo(id) {
+  getVideos().then(videos => {
+    const v = videos.find(x => x.id === id);
+    if (!v) return;
+    const blob = new Blob([v.data], { type: v.type });
+    const url = URL.createObjectURL(blob);
+    const player = document.getElementById('videoPlayer');
+    player.src = url;
+    document.getElementById('videoModal').classList.add('open');
+    player.play().catch(() => {});
+  });
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  modal.classList.remove('open');
+  const player = document.getElementById('videoPlayer');
+  player.pause();
+  player.src = '';
+}
+
+// Upload handler
+document.getElementById('uploadZone').addEventListener('click', () => {
+  document.getElementById('videoFileInput').click();
+});
+
+document.getElementById('videoFileInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  e.target.value = '';
+  await addVideo(file);
+  await renderVideos();
+});
+
+// Drag & drop
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); });
+uploadZone.addEventListener('drop', async e => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  const files = e.dataTransfer.files;
+  for (const file of files) {
+    if (file.type.startsWith('video/')) {
+      await addVideo(file);
+    } else {
+      alert(`「${file.name}」不是视频文件，已跳过`);
+    }
+  }
+  await renderVideos();
+});
+
+// ======================= 视频跳转链接 (localStorage) =======================
+const VIDEO_LINKS_KEY = 'wushuVideoLinks';
+
+function getVideoLinks() {
+  try { return JSON.parse(localStorage.getItem(VIDEO_LINKS_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveVideoLinks(links) {
+  localStorage.setItem(VIDEO_LINKS_KEY, JSON.stringify(links));
+}
+
+function detectLinkType(url) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    if (host.includes('bilibili.com') || host.includes('b23.tv')) return { type: 'B站', icon: '📺', color: '#fb7299' };
+    if (host.includes('youtube.com') || host.includes('youtu.be')) return { type: 'YouTube', icon: '▶️', color: '#ff0000' };
+    if (host.includes('douyin.com')) return { type: '抖音', icon: '🎵', color: '#000000' };
+    if (host.includes('ixigua.com')) return { type: '西瓜视频', icon: '🍉', color: '#ff6b35' };
+    return { type: '视频链接', icon: '🔗', color: 'var(--ming-light)' };
+  } catch {
+    return null;
+  }
+}
+
+function addVideoLink(url) {
+  url = url.trim();
+  if (!url) return false;
+  const info = detectLinkType(url);
+  if (!info) { alert('请输入有效的视频链接（以 http:// 或 https:// 开头）'); return false; }
+  const links = getVideoLinks();
+  if (links.some(l => l.url === url)) { alert('该链接已存在'); return false; }
+  links.push({ url, type: info.type, icon: info.icon, color: info.color, date: new Date().toISOString().substring(0, 10) });
+  saveVideoLinks(links);
+  return true;
+}
+
+function deleteVideoLink(url) {
+  let links = getVideoLinks();
+  links = links.filter(l => l.url !== url);
+  saveVideoLinks(links);
+}
+
+// Modified renderVideos — now includes both uploaded videos and link cards
+const origRenderVideos = renderVideos;
+renderVideos = async function() {
+  // Clean up old object URLs
+  videoObjectURLs.forEach(u => URL.revokeObjectURL(u));
+  videoObjectURLs = [];
+  
+  const videos = await getVideos();
+  const links = getVideoLinks();
+  const grid = document.getElementById('videoGrid');
+  
+  if (videos.length === 0 && links.length === 0) {
+    grid.innerHTML = '<div class="video-empty">🎬 暂无视频素材，点击上方区域上传或添加链接</div>';
+  } else {
+    const videoCards = videos.map(v => {
+      const blob = new Blob([v.data], { type: v.type });
+      const url = URL.createObjectURL(blob);
+      videoObjectURLs.push(url);
+      const sizeMB = (v.size / 1024 / 1024).toFixed(1);
+      const date = v.date ? v.date.substring(0, 10) : '';
+      return `<div class="video-card">
+        <div class="video-thumb" onclick="playVideo(${v.id})">🎬</div>
+        <div class="video-info">
+          <div class="video-filename" title="${v.name}">${v.name}</div>
+          <div class="video-meta">
+            <span>${sizeMB} MB</span>
+            <span>${date}</span>
+            <span class="video-delete" onclick="deleteAndRefresh(${v.id})">🗑️ 删除</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    
+    const linkCards = links.map(l => `
+      <div class="video-card video-link-card">
+        <div class="video-thumb" onclick="window.open('${l.url}','_blank')" style="background:linear-gradient(135deg,${l.color}15,var(--ink-card));color:${l.color}" title="点击跳转至 ${l.type}">
+          ${l.icon}
+          <span style="font-size:11px;position:absolute;bottom:8px;right:10px;background:${l.color}22;color:${l.color};padding:1px 6px;border-radius:6px">${l.type}</span>
+        </div>
+        <div class="video-info">
+          <div class="video-filename" title="${l.url}">🔗 ${l.type} 链接</div>
+          <div class="video-link-url" title="${l.url}">${l.url}</div>
+          <div class="video-meta">
+            <span>${l.date}</span>
+            <span class="video-delete" onclick="deleteLinkAndRefresh('${l.url.replace(/'/g, "\\'")}')">🗑️ 删除</span>
+          </div>
+        </div>
+      </div>`).join('');
+    
+    grid.innerHTML = videoCards + linkCards;
+  }
+  
+  // Update storage bar (only for uploaded videos, not links)
+  let totalBytes = videos.reduce((s, v) => s + v.size, 0);
+  let usedMB = (totalBytes / 1024 / 1024).toFixed(1);
+  let pct = Math.min(100, (totalBytes / MAX_VIDEO_SIZE) * 100);
+  document.getElementById('storageFill').style.width = pct + '%';
+  document.getElementById('storageText').textContent = `已用 ${usedMB} MB / 500 MB`;
+};
+
+// Override deleteAndRefresh to also refresh with link data
+const origDeleteAndRefresh = deleteAndRefresh;
+deleteAndRefresh = async function(id) {
+  await deleteVideo(id);
+  await renderVideos();
+};
+
+function deleteLinkAndRefresh(url) {
+  if (!confirm('确定删除此链接？')) return;
+  deleteVideoLink(url);
+  renderVideos();
+}
+
+// Link input handlers
+document.getElementById('videoUrlInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const input = document.getElementById('videoUrlInput');
+    if (addVideoLink(input.value)) {
+      input.value = '';
+      renderVideos();
+    }
+  }
+});
+
+document.getElementById('videoUrlAddBtn').addEventListener('click', () => {
+  const input = document.getElementById('videoUrlInput');
+  if (addVideoLink(input.value)) {
+    input.value = '';
+    renderVideos();
+  }
+});
+
+// ======================= 搜索面板 =======================
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('open');
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResults').innerHTML = '';
+  document.getElementById('searchInput').focus();
+  searchAll('');
+}
+
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('open');
+}
+
+let searchIdx = -1;
+
+function searchAll(query) {
+  const results = [];
+  const q = query.toLowerCase();
+  if (!q) { document.getElementById('searchResults').innerHTML = '<div style="color:var(--text-dim);padding:20px;text-align:center;font-size:0.85em">输入关键词搜索武学、心法、奇术、配装...</div>'; return; }
+  
+  // Search weapons
+  WEAPON_DATA.forEach(w => {
+    if (w.name.includes(q) || w.desc.includes(q) || w.school.includes(q)) {
+      results.push({ icon: w.icon, title: w.name, desc: w.desc, tab: 'weapons', tabName: '兵器谱' });
+    }
+  });
+  
+  // Search wushu
+  WUSHU_DATA.forEach(w => {
+    if (w.name.includes(q) || w.desc.includes(q) || w.school.includes(q) || w.weapon.includes(q) || w.tags.some(t => t.includes(q))) {
+      results.push({ icon: w.icon, title: w.name, desc: `${w.school}·${w.weapon} · ${w.desc.substring(0, 30)}...`, tab: 'wushu', tabName: '武学总览' });
+    }
+  });
+  
+  // Search xinfa
+  ALL_XINFA.forEach(x => {
+    if (x.name.includes(q) || x.desc.includes(q)) {
+      results.push({ icon: '📖', title: x.name, desc: `${x.quality} · ${x.desc.substring(0, 30)}...`, tab: 'xinfa', tabName: '心法大全' });
+    }
+  });
+  
+  // Search qishu
+  QISHU_DATA.forEach(g => g.items.forEach(qs => {
+    if (qs.name.includes(q) || qs.desc.includes(q)) {
+      results.push({ icon: qs.icon, title: qs.name, desc: qs.desc, tab: 'qishu', tabName: '奇术' });
+    }
+  }));
+  
+  // Search builds
+  BUILD_DATA.forEach(b => {
+    if (b.name.includes(q) || b.desc.includes(q) || b.wushu.includes(q) || b.xinfa.includes(q)) {
+      results.push({ icon: '⚙️', title: b.name, desc: `${b.weapons} · ${b.desc.substring(0, 30)}...`, tab: 'builds', tabName: '流派配装' });
+    }
+  });
+  
+  const container = document.getElementById('searchResults');
+  if (results.length === 0) {
+    container.innerHTML = '<div style="color:var(--text-dim);padding:20px;text-align:center;font-size:0.85em">未找到匹配结果</div>';
+  } else {
+    container.innerHTML = results.map((r, i) =>
+      `<div class="search-item" data-idx="${i}" onclick="jumpToSearch('${r.tab}')">
+        <span class="search-item-icon">${r.icon}</span>
+        <div class="search-item-text">
+          <div class="search-item-title">${r.title}</div>
+          <div class="search-item-desc">${r.desc}</div>
+        </div>
+        <span class="search-item-tab">${r.tabName}</span>
+      </div>`
+    ).join('');
+    searchIdx = -1;
+  }
+}
+
+function jumpToSearch(tab) {
+  closeSearch();
+  switchToTab(tab);
+}
+
+document.getElementById('searchInput').addEventListener('input', e => searchAll(e.target.value));
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  const items = document.querySelectorAll('.search-item');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    searchIdx = Math.min(searchIdx + 1, items.length - 1);
+    items.forEach((it, i) => it.style.background = i === searchIdx ? 'rgba(201,168,76,0.12)' : '');
+    if (items[searchIdx]) items[searchIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    searchIdx = Math.max(searchIdx - 1, 0);
+    items.forEach((it, i) => it.style.background = i === searchIdx ? 'rgba(201,168,76,0.12)' : '');
+    if (items[searchIdx]) items[searchIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter' && searchIdx >= 0 && items[searchIdx]) {
+    items[searchIdx].click();
+  }
+});
+
+// ======================= INIT =======================
+(async function initApp() {
+  await openVideoDB();
+  await renderVideos();
+  renderWeapons();
+  renderWushu('all');
+  renderXinfa();
+  renderQishu();
+  renderBuilds();
+  renderSimXinfa('all');
+})();
+</script>
+</body>
+</html>
